@@ -1,15 +1,18 @@
 package com.example.prog2lab1arpan;
 
-public class user {
+public class Table {
     private int id;
     private String name;
     private int sinNumber;
+    private int age;
 
-    public user(int id, String name, int sinNumber) {
+    public Table(int id, String name, int sinNumber) {
         this.id = id;
         this.name = name;
         this.sinNumber = sinNumber;
+        this.age = age;
     }
+
     public int getId() {
         return id;
     }
@@ -32,5 +35,13 @@ public class user {
 
     public void setSinNumber(int sinNumber) {
         this.sinNumber = sinNumber;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

@@ -6,6 +6,7 @@ module com.example.prog2lab1arpan {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
+    requires java.sql;
 
     opens com.example.prog2lab1arpan to javafx.fxml;
     exports com.example.prog2lab1arpan;
