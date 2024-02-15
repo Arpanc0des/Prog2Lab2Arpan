@@ -3,13 +3,16 @@ package com.example.prog2lab1arpan;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+
 import java.sql.*;
+
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,7 +26,11 @@ public class HelloController implements Initializable {
     @FXML
     public TextField sinNumberField;
     @FXML
-    public TextField ageField;public Button uploadButton;
+    public TextField ageField;
+
+    @FXML
+    public Button uploadButton;
+
     @FXML
     private TableColumn<Table, Integer> id;
     @FXML
@@ -50,8 +57,10 @@ public class HelloController implements Initializable {
     protected void getData() {
         populateTable();
     }
+
     @FXML
-    public void uploadData() { addRow();
+    public void uploadData() {
+        addRow();
     }
 
     private void addRow() {
@@ -93,7 +102,7 @@ public class HelloController implements Initializable {
 
 
     public void populateTable() {
-        list.clear(); //clear table buffer before displaying
+        list.clear(); // Clear the ObservableList before adding new items
         // Establish a database connection
         String jdbcUrl = "jdbc:mysql://localhost:3306/programming2_lab1_arpansilwal";
         String dbUser = "root";
@@ -103,18 +112,21 @@ public class HelloController implements Initializable {
             String query = "SELECT * FROM `table`";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            // Populate the table with data from the database
+            // Populate the ObservableList with data from the database
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 int sinNumber = resultSet.getInt("sinNumber");
                 int age = resultSet.getInt("age");
-                table_view.getItems().add(new Table(id, name, sinNumber));
+
+                // Add the data to the ObservableList
+                list.add(new Table(id, name, sinNumber, age));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
 
 }

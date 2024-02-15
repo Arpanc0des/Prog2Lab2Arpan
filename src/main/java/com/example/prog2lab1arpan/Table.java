@@ -6,7 +6,7 @@ public class Table {
     private int sinNumber;
     private int age;
 
-    public Table(int id, String name, int sinNumber) {
+    public Table(int id, String name, int sinNumber, int age) {
         this.id = id;
         this.name = name;
         this.sinNumber = sinNumber;
