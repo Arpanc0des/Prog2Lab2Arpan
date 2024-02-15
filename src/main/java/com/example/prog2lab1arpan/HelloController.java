@@ -3,20 +3,27 @@ package com.example.prog2lab1arpan;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
 import java.sql.*;
-
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
     @FXML
     public TableView<Table> table_view;
+    @FXML
+    public TextField idField;
+    @FXML
+    public TextField nameField;
+    @FXML
+    public TextField sinNumberField;
+    @FXML
+    public TextField ageField;public Button uploadButton;
     @FXML
     private TableColumn<Table, Integer> id;
     @FXML
@@ -43,8 +50,50 @@ public class HelloController implements Initializable {
     protected void getData() {
         populateTable();
     }
+    @FXML
+    public void uploadData() { addRow();
+    }
+
+    private void addRow() {
+
+        int idValue = Integer.parseInt(idField.getText());
+        String nameValue = nameField.getText();
+        int sinNumberValue = Integer.parseInt(sinNumberField.getText());
+        int ageValue = Integer.parseInt(ageField.getText());
+
+        // Establish a database connection
+        String jdbcUrl = "jdbc:mysql://localhost:3306/programming2_lab1_arpansilwal";
+        String dbUser = "root";
+        String dbPassword = "";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword)) {
+            // Execute an SQL query to insert data into the database
+            String query = "INSERT INTO `table` (id, name, sinNumber, age) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idValue);
+            preparedStatement.setString(2, nameValue);
+            preparedStatement.setInt(3, sinNumberValue);
+            preparedStatement.setInt(4, ageValue);
+
+            // Execute the update
+            preparedStatement.executeUpdate();
+
+            // Clear the text fields after successful upload
+            idField.clear();
+            nameField.clear();
+            sinNumberField.clear();
+            ageField.clear();
+
+            populateTable();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void populateTable() {
+        list.clear(); //clear table buffer before displaying
         // Establish a database connection
         String jdbcUrl = "jdbc:mysql://localhost:3306/programming2_lab1_arpansilwal";
         String dbUser = "root";
@@ -66,4 +115,6 @@ public class HelloController implements Initializable {
             e.printStackTrace();
         }
     }
+
+
 }

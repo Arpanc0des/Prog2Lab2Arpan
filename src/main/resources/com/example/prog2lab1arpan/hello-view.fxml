@@ -8,17 +8,22 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Pane prefHeight="300.0" prefWidth="450.0">
+    <Pane prefHeight="323.0" prefWidth="660.0">
         <children>
             <TableView fx:id="table_view" layoutX="167.0" layoutY="50.0" prefHeight="200.0" prefWidth="300.0">
                 <columns>
                     <TableColumn fx:id="id" prefWidth="75.0" text="ID" />
                     <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
                     <TableColumn fx:id="sinNumber" prefWidth="75.0" text="Sin Number" />
-                    <TableColumn fx:id="age" prefWidth="75.0" text="Age"/>
+                    <TableColumn fx:id="age" prefWidth="75.0" text="Age" />
                 </columns>
             </TableView>
-            <Button layoutX="286.0" layoutY="261.0" mnemonicParsing="false" onAction="#getData" text="Get data" />
+            <TextField fx:id="idField" layoutX="168.0" layoutY="250.0" prefHeight="25.0" prefWidth="68.0" promptText="ID" />
+            <TextField fx:id="nameField" layoutX="236.0" layoutY="250.0" prefHeight="25.0" prefWidth="81.0" promptText="Name" />
+            <TextField fx:id="sinNumberField" layoutX="317.0" layoutY="250.0" prefHeight="25.0" prefWidth="81.0" promptText="Sin Number" />
+            <TextField fx:id="ageField" layoutX="398.0" layoutY="250.0" prefHeight="25.0" prefWidth="68.0" promptText="Age" />
+            <Button fx:id="uploadButton" layoutX="467.0" layoutY="249.0" mnemonicParsing="false" onAction="#uploadData" text="Upload data" />
+            <Button fx:id="getData" layoutX="286.0" layoutY="284.0" mnemonicParsing="false" onAction="#getData" text="Get data" />
         </children>
     </Pane>
 </VBox>
