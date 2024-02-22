@@ -20,8 +20,6 @@ public class HelloController implements Initializable {
     @FXML
     public Label errorMessage;
     @FXML
-    public String AddRow, UpdateRow, DeleteRow;
-    @FXML
     public ComboBox<String> comboBoxId;
     @FXML
     private TableColumn<Table, Integer> id, sinNumber, age;
@@ -73,23 +71,20 @@ public class HelloController implements Initializable {
     @FXML
     public void handleCRUDSelection() {
         selectedOption = comboBoxId.getValue();
-        if (selectedOption.equals("AddRow")) {
-            idField.setDisable(false);
-            nameField.setDisable(false);
-            sinNumberField.setDisable(false);
-            ageField.setDisable(false);
-        } else if (selectedOption.equals("UpdateRow")) {
-            idField.setDisable(false);
-            nameField.setDisable(false);
-            sinNumberField.setDisable(false);
-            ageField.setDisable(false);
-        } else if (selectedOption.equals("DeleteRow")) {
-            idField.setDisable(false);
-            nameField.setDisable(true);
-            sinNumberField.setDisable(true);
-            ageField.setDisable(true);
-        } else {
-            errorMessage.setText("Choose one of the CRUD operation to make any kind of change");
+        switch (selectedOption) {
+            case "AddRow", "UpdateRow" -> {
+                idField.setDisable(false);
+                nameField.setDisable(false);
+                sinNumberField.setDisable(false);
+                ageField.setDisable(false);
+            }
+            case "DeleteRow" -> {
+                idField.setDisable(false);
+                nameField.setDisable(true);
+                sinNumberField.setDisable(true);
+                ageField.setDisable(true);
+            }
+            default -> errorMessage.setText("Choose one of the CRUD operation to make any kind of change");
         }
     }
 
@@ -115,56 +110,60 @@ public class HelloController implements Initializable {
     }
 
     private boolean validateRowCRUD() {
-        if (selectedOption.equals("AddRow")) {
-            if (nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
-                errorMessage.setText("You need data to insert. Fill in data to execute.");
-                return false;
+        switch (selectedOption) {
+            case "AddRow" -> {
+                if (nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
+                    errorMessage.setText("You need data to insert. Fill in data to execute.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(sinNumberField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("Sin number must be a number.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(ageField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("Age must be a number.");
+                    return false;
+                }
             }
-            try {
-                Integer.parseInt(sinNumberField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("Sin number must be a number.");
-                return false;
+            case "UpdateRow" -> {
+                if (idField.getText().isEmpty() || nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
+                    errorMessage.setText("You need data to update. Fill in data to execute.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(idField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("ID must be a number.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(sinNumberField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("Sin number must be a number.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(ageField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("Age must be a number.");
+                    return false;
+                }
             }
-            try {
-                Integer.parseInt(ageField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("Age must be a number.");
-                return false;
-            }
-        } else if (selectedOption.equals("UpdateRow")) {
-            if (idField.getText().isEmpty() || nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
-                errorMessage.setText("You need data to update. Fill in data to execute.");
-                return false;
-            }
-            try {
-                Integer.parseInt(idField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("ID must be a number.");
-                return false;
-            }
-            try {
-                Integer.parseInt(sinNumberField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("Sin number must be a number.");
-                return false;
-            }
-            try {
-                Integer.parseInt(ageField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("Age must be a number.");
-                return false;
-            }
-        } else if (selectedOption.equals("DeleteRow")) {
-            if (idField.getText().isEmpty()) {
-                errorMessage.setText("Fill in ID to execute.");
-                return false;
-            }
-            try {
-                Integer.parseInt(idField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage.setText("ID must be a number.");
-                return false;
+            case "DeleteRow" -> {
+                if (idField.getText().isEmpty()) {
+                    errorMessage.setText("Fill in ID to execute.");
+                    return false;
+                }
+                try {
+                    Integer.parseInt(idField.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage.setText("ID must be a number.");
+                    return false;
+                }
             }
         }
 
@@ -173,8 +172,22 @@ public class HelloController implements Initializable {
 
     //=====================end of validation
     //-------------------------------------------insert data================================
+    private boolean idExistsCheck(int id) {
+        for (Table item : list) {
+            if (item.getId() == id) {
+                return true; // ID already exists
+            }
+        }
+        return false; // ID does not exist
+    }
+
     private void insertRow() {
         int idValue = Integer.parseInt(idField.getText());
+        if (idExistsCheck(idValue)) {
+            errorMessage.setText("ID already exists. Please enter a different ID.");
+            return;
+        }
+        ; //cant return in a void so return will just terminate the function
         String nameValue = nameField.getText();
         int sinNumberValue = Integer.parseInt(sinNumberField.getText());
         int ageValue = Integer.parseInt(ageField.getText());
@@ -244,7 +257,10 @@ public class HelloController implements Initializable {
     //----------------------------------delete data============================================
     private void deleteRow() {
         int idValue = Integer.parseInt(idField.getText());
-
+        if (!idExistsCheck(idValue)) {
+            errorMessage.setText("This ID does not exist. Try something that exists.");
+            return;
+        }
         // Establish a database connection
         String jdbcUrl = "jdbc:mysql://localhost:3306/lab2_arpansilwal";
         String dbUser = "root";

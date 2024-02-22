@@ -11,31 +11,34 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <Pane prefHeight="367.0" prefWidth="660.0">
-        <children>
-            <TableView fx:id="table_view" layoutX="167.0" layoutY="50.0" prefHeight="200.0" prefWidth="300.0">
-                <columns>
-                    <TableColumn fx:id="id" prefWidth="75.0" text="ID" />
-                    <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
-                    <TableColumn fx:id="sinNumber" prefWidth="75.0" text="Sin Number" />
-                    <TableColumn fx:id="age" prefWidth="75.0" text="Age" />
-                </columns>
-            </TableView>
-            <TextField fx:id="idField" layoutX="168.0" layoutY="291.0" prefHeight="25.0" prefWidth="68.0" promptText="ID" />
-            <TextField fx:id="nameField" layoutX="236.0" layoutY="291.0" prefHeight="25.0" prefWidth="81.0" promptText="Name" />
-            <TextField fx:id="sinNumberField" layoutX="317.0" layoutY="291.0" prefHeight="25.0" prefWidth="81.0" promptText="Sin Number" />
-            <TextField fx:id="ageField" layoutX="398.0" layoutY="291.0" prefHeight="25.0" prefWidth="68.0" promptText="Age" />
-            <Button fx:id="getData" layoutX="286.0" layoutY="328.0" mnemonicParsing="false" onAction="#getData" text="Get data" />
-            <ComboBox fx:id="comboBoxId" layoutX="242.0" layoutY="260.0" prefWidth="150.0" promptText="Choose CRUD" visibleRowCount="5" onAction="#handleCRUDSelection">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="AddRow" />
-                        <String fx:value="UpdateRow" />
-                        <String fx:value="DeleteRow" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-         <Button layoutX="478.0" layoutY="291.0" mnemonicParsing="false" text="Execute" onAction="#executeCrud"/>
-        </children>
+        <TableView fx:id="table_view" layoutX="167.0" layoutY="50.0" prefHeight="200.0" prefWidth="300.0">
+            <columns>
+                <TableColumn fx:id="id" prefWidth="75.0" text="ID"/>
+                <TableColumn fx:id="name" prefWidth="75.0" text="Name"/>
+                <TableColumn fx:id="sinNumber" prefWidth="75.0" text="Sin Number"/>
+                <TableColumn fx:id="age" prefWidth="75.0" text="Age"/>
+            </columns>
+        </TableView>
+        <TextField fx:id="idField" layoutX="168.0" layoutY="291.0" prefHeight="25.0" prefWidth="68.0" promptText="ID"/>
+        <TextField fx:id="nameField" layoutX="236.0" layoutY="291.0" prefHeight="25.0" prefWidth="81.0"
+                   promptText="Name"/>
+        <TextField fx:id="sinNumberField" layoutX="317.0" layoutY="291.0" prefHeight="25.0" prefWidth="81.0"
+                   promptText="Sin Number"/>
+        <TextField fx:id="ageField" layoutX="398.0" layoutY="291.0" prefHeight="25.0" prefWidth="68.0"
+                   promptText="Age"/>
+        <Button fx:id="getData" layoutX="286.0" layoutY="328.0" mnemonicParsing="false" onAction="#getData"
+                text="Get data"/>
+        <ComboBox fx:id="comboBoxId" layoutX="242.0" layoutY="260.0" prefWidth="150.0" promptText="Choose CRUD"
+                  visibleRowCount="5" onAction="#handleCRUDSelection">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="AddRow"/>
+                    <String fx:value="UpdateRow"/>
+                    <String fx:value="DeleteRow"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Button layoutX="478.0" layoutY="291.0" mnemonicParsing="false" text="Execute" onAction="#executeCrud"/>
     </Pane>
    <Label fx:id="errorMessage" />
 </VBox>
