@@ -7,43 +7,33 @@ import javafx.fxml.FXML;
 import java.sql.*;
 
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static java.lang.Integer.*;
+
 public class HelloController implements Initializable {
+    public String selectedOption;
     @FXML
     public TableView<Table> table_view;
     @FXML
-    public TextField idField;
+    public TextField idField, nameField, sinNumberField, ageField;
     @FXML
-    public TextField nameField;
+    public Label errorMessage;
     @FXML
-    public TextField sinNumberField;
+    public String AddRow, UpdateRow, DeleteRow;
     @FXML
-    public TextField ageField;
-
+    public ComboBox comboBoxId;
     @FXML
-    public Button uploadButton;
-
-    @FXML
-    private TableColumn<Table, Integer> id;
+    private TableColumn<Table, Integer> id, sinNumber, age;
     @FXML
     private TableColumn<Table, String> name;
-    @FXML
-    private TableColumn<Table, Integer> sinNumber;
-    @FXML
-    private TableColumn<Table, Integer> age;
-
     ObservableList<Table> list = FXCollections.observableArrayList();
     private URL url;
     private ResourceBundle resourceBundle;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         id.setCellValueFactory(new PropertyValueFactory<Table, Integer>("id"));
@@ -52,59 +42,10 @@ public class HelloController implements Initializable {
         age.setCellValueFactory(new PropertyValueFactory<Table, Integer>("age"));
         table_view.setItems(list);
     }
-
-    @FXML
-    protected void getData() {
-        populateTable();
-    }
-
-    @FXML
-    public void uploadData() {
-        addRow();
-    }
-
-    private void addRow() {
-
-        int idValue = Integer.parseInt(idField.getText());
-        String nameValue = nameField.getText();
-        int sinNumberValue = Integer.parseInt(sinNumberField.getText());
-        int ageValue = Integer.parseInt(ageField.getText());
-
-        // Establish a database connection
-        String jdbcUrl = "jdbc:mysql://localhost:3306/programming2_lab1_arpansilwal";
-        String dbUser = "root";
-        String dbPassword = "";
-
-        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword)) {
-            // Execute an SQL query to insert data into the database
-            String query = "INSERT INTO `table` (id, name, sinNumber, age) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, idValue);
-            preparedStatement.setString(2, nameValue);
-            preparedStatement.setInt(3, sinNumberValue);
-            preparedStatement.setInt(4, ageValue);
-
-            // Execute the update
-            preparedStatement.executeUpdate();
-
-            // Clear the text fields after successful upload
-            idField.clear();
-            nameField.clear();
-            sinNumberField.clear();
-            ageField.clear();
-
-            populateTable();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void populateTable() {
+    public void fetchTable() {
         list.clear(); // Clear the ObservableList before adding new items
         // Establish a database connection
-        String jdbcUrl = "jdbc:mysql://localhost:3306/programming2_lab1_arpansilwal";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/lab2_arpansilwal";
         String dbUser = "root";
         String dbPassword = "";
         try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword)) {
@@ -127,6 +68,93 @@ public class HelloController implements Initializable {
         }
     }
 
+    @FXML
+    protected void getData() {
+        fetchTable();
+    }
+
+    @FXML
+    public void handleCRUDSelection() {
+        selectedOption = (String) comboBoxId.getValue();
+        if (selectedOption.equals("AddRow")) {
+            idField.setDisable(true);
+            nameField.setDisable(false);
+            sinNumberField.setDisable(false);
+            ageField.setDisable(false);
+        } else if (selectedOption.equals("UpdateRow")) {
+            idField.setDisable(false);
+            nameField.setDisable(false);
+            sinNumberField.setDisable(false);
+            ageField.setDisable(false);
+        } else if (selectedOption.equals("DeleteRow")) {
+            idField.setDisable(false);
+            nameField.setDisable(true);
+            sinNumberField.setDisable(true);
+            ageField.setDisable(true);
+        } else {
+            errorMessage.setText("Choose one of the CRUD operation to make any kind of change");
+        }
+
+    }
+
+    public void executeCrud() {
+        if ( (selectedOption == "AddRow") && validateAddRow()){
+            insertRow();
+        }
+    }
+
+    private void insertRow() {
+
+        int idValue = parseInt(idField.getText());
+        String nameValue = nameField.getText();
+        int sinNumberValue = parseInt(sinNumberField.getText());
+        int ageValue = parseInt(ageField.getText());
+
+        // Establish a database connection
+        String jdbcUrl = "jdbc:mysql://localhost:3306/lab2_arpansilwal";
+        String dbUser = "root";
+        String dbPassword = "";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword)) {
+            // Execute an SQL query to insert data into the database
 
 
+            String query = "INSERT INTO `table` (name, sinNumber, age) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nameValue);
+            preparedStatement.setInt(2, sinNumberValue);
+            preparedStatement.setInt(3, ageValue);
+            // Execute the update
+            preparedStatement.executeUpdate();
+            // Clear the text fields after successful upload
+            nameField.clear();
+            sinNumberField.clear();
+            ageField.clear();
+
+            fetchTable();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean validateAddRow() {
+        if (nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
+            errorMessage.setText("You need data to insert. fill data to execute");
+            return false;
+        }
+        try {
+            int x = Integer.parseInt(sinNumberField.getText());
+        }catch(NumberFormatException e) {
+            errorMessage.setText("sin number must be a NUMBER");
+            return false;
+        }
+        try {
+            int x = Integer.parseInt(ageField.getText());
+        }catch(NumberFormatException e) {
+            errorMessage.setText("sin number must be a NUMBER");
+            return false;
+        }
+        return true;
+    }
 }
