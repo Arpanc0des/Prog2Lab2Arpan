@@ -28,8 +28,6 @@ public class HelloController implements Initializable {
     @FXML
     private TableColumn<Table, String> name;
     ObservableList<Table> list = FXCollections.observableArrayList();
-    private URL url;
-    private ResourceBundle resourceBundle;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,12 +91,12 @@ public class HelloController implements Initializable {
         } else {
             errorMessage.setText("Choose one of the CRUD operation to make any kind of change");
         }
-
     }
 
+    //-------------------------Input validation section (AKA stupid proofing)
     public void executeCrud() {
         if (selectedOption != null) {
-            if (validateRow()) {
+            if (validateRowCRUD()) {
                 switch (selectedOption) {
                     case "AddRow":
                         insertRow();
@@ -116,70 +114,65 @@ public class HelloController implements Initializable {
         }
     }
 
-    private boolean validateRow() {
-        boolean isValid = true;
-        String errorMessageText = "";
-
+    private boolean validateRowCRUD() {
         if (selectedOption.equals("AddRow")) {
             if (nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
-                errorMessageText = "You need data to insert. Fill in data to execute.";
-                isValid = false;
+                errorMessage.setText("You need data to insert. Fill in data to execute.");
+                return false;
             }
             try {
                 Integer.parseInt(sinNumberField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "Sin number must be a number.";
-                isValid = false;
+                errorMessage.setText("Sin number must be a number.");
+                return false;
             }
             try {
                 Integer.parseInt(ageField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "Age must be a number.";
-                isValid = false;
+                errorMessage.setText("Age must be a number.");
+                return false;
             }
         } else if (selectedOption.equals("UpdateRow")) {
             if (idField.getText().isEmpty() || nameField.getText().isEmpty() || sinNumberField.getText().isEmpty() || ageField.getText().isEmpty()) {
-                errorMessageText = "You need data to update. Fill in data to execute.";
-                isValid = false;
+                errorMessage.setText("You need data to update. Fill in data to execute.");
+                return false;
             }
             try {
                 Integer.parseInt(idField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "ID must be a number.";
-                isValid = false;
+                errorMessage.setText("ID must be a number.");
+                return false;
             }
             try {
                 Integer.parseInt(sinNumberField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "Sin number must be a number.";
-                isValid = false;
+                errorMessage.setText("Sin number must be a number.");
+                return false;
             }
             try {
                 Integer.parseInt(ageField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "Age must be a number.";
-                isValid = false;
+                errorMessage.setText("Age must be a number.");
+                return false;
             }
         } else if (selectedOption.equals("DeleteRow")) {
             if (idField.getText().isEmpty()) {
-                errorMessageText = "ID is required to delete a row. Fill in ID to execute.";
-                isValid = false;
+                errorMessage.setText("Fill in ID to execute.");
+                return false;
             }
             try {
                 Integer.parseInt(idField.getText());
             } catch (NumberFormatException e) {
-                errorMessageText = "ID must be a number.";
-                isValid = false;
+                errorMessage.setText("ID must be a number.");
+                return false;
             }
         }
 
-        if (!isValid) {
-            errorMessage.setText(errorMessageText);
-        }
-
-        return isValid;
+        return true;
     }
 
+    //=====================end of validation
+    //-------------------------------------------insert data================================
     private void insertRow() {
         int idValue = Integer.parseInt(idField.getText());
         String nameValue = nameField.getText();
@@ -213,6 +206,7 @@ public class HelloController implements Initializable {
         }
     }
 
+    //========================================update data----------------------------------------
     private void updateRow() {
         int idValue = Integer.parseInt(idField.getText());
         String nameValue = nameField.getText();
@@ -247,6 +241,7 @@ public class HelloController implements Initializable {
         }
     }
 
+    //----------------------------------delete data============================================
     private void deleteRow() {
         int idValue = Integer.parseInt(idField.getText());
 
