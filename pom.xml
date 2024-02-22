@@ -101,7 +101,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.prog2lab1arpan/com.example.prog2lab1arpan.HelloApplication
+                            <mainClass>com.example.prog2lab1arpan/com.example.prog2lab2arpan.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

@@ -1,4 +1,4 @@
-package com.example.prog2lab1arpan;
+package com.example.prog2lab2arpan;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

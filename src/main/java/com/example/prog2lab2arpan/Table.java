@@ -1,4 +1,4 @@
-package com.example.prog2lab1arpan;
+package com.example.prog2lab2arpan;
 
 public class Table {
     private int id;

@@ -1,4 +1,4 @@
-package com.example.prog2lab1arpan;
+package com.example.prog2lab2arpan;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -187,7 +187,7 @@ public class HelloController implements Initializable {
             errorMessage.setText("ID already exists. Please enter a different ID.");
             return;
         }
-        ; //cant return in a void so return will just terminate the function
+        //cant return in a void so return will just terminate the function
         String nameValue = nameField.getText();
         int sinNumberValue = Integer.parseInt(sinNumberField.getText());
         int ageValue = Integer.parseInt(ageField.getText());

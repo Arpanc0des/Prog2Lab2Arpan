@@ -8,6 +8,6 @@ module com.example.prog2lab1arpan {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
-    opens com.example.prog2lab1arpan to javafx.fxml;
-    exports com.example.prog2lab1arpan;
+    opens com.example.prog2lab2arpan to javafx.fxml;
+    exports com.example.prog2lab2arpan;
 }
